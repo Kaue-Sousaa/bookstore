@@ -34,6 +34,10 @@ public record BookRequest(
         @NotNull(message = "Categoria é obrigatória")
         Long categoryId,
 
+        @NotNull(message = "Total de cópias é obrigatório")
+        @Min(value = 1, message = "Total de cópias deve ser pelo menos 1")
+        Integer totalCopies,
+
         @NotEmpty(message = "Pelo menos um autor deve ser informado")
         List<Long> authorIds
 

@@ -53,6 +53,12 @@ public class Book {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(nullable = false)
+    private Integer totalCopies = 1;
+
+    @Column(nullable = false)
+    private Integer availableCopies = 1;
+
     @Column
     private boolean active = true;
 

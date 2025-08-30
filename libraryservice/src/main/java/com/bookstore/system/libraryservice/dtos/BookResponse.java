@@ -14,6 +14,8 @@ public record BookResponse(
         Long pages,
         String language,
         CategoryResponse category,
+        Integer totalCopies,
+        Integer availableCopies,
         List<AuthorResponse> authors,
         boolean active
 

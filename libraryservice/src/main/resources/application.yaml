@@ -2,6 +2,21 @@ spring:
   application:
     name: libraryservice
 
+  jpa:
+    database: POSTGRESQL
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    sql:
+      init:
+        platform: postgresql
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5434/libraries?createDatabaseIfNotExist=true&serverTimezone=America/Sao_Paulo
+    username: postgres
+    password: admin123456
+
 
 server:
   servlet:
