@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: libraryservice
+
+
+server:
+  servlet:
+    context-path: /api
+  port: 8082
