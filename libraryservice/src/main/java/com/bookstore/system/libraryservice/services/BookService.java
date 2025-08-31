@@ -3,6 +3,8 @@ package com.bookstore.system.libraryservice.services;
 import com.bookstore.system.libraryservice.dtos.AvailabilityUpdateRequest;
 import com.bookstore.system.libraryservice.dtos.BookRequest;
 import com.bookstore.system.libraryservice.dtos.BookResponse;
+import com.bookstore.system.libraryservice.exceptions.BusinessException;
+import com.bookstore.system.libraryservice.exceptions.ResourceNotFoundException;
 import com.bookstore.system.libraryservice.mappers.BookMapper;
 import com.bookstore.system.libraryservice.models.Book;
 import com.bookstore.system.libraryservice.repositories.BookRepository;
@@ -55,7 +57,7 @@ public class BookService {
 
         bookRepository.findByIsbnAndActiveTrue(request.isbn())
                 .ifPresent(book -> {
-                    throw new RuntimeException("Já existe um livro com o ISBN: " + request.isbn());
+                    throw new BusinessException("Já existe um livro com o ISBN: " + request.isbn());
                 });
 
         var book = bookMapper.toEntity(request);
@@ -77,11 +79,10 @@ public class BookService {
 
         var existingBook = findBookById(id);
 
-        if (request.isbn() != null &&
-                !request.isbn().equals(existingBook.getIsbn()) &&
-                bookRepository.findByIsbnAndActiveTrue(request.isbn()).isPresent()) {
-            throw new RuntimeException("Já existe um livro com o ISBN: " + request.isbn());
-        }
+        bookRepository.findByIsbnAndActiveTrue(request.isbn())
+                .ifPresent(book -> {
+                    throw new BusinessException("Já existe um livro com o ISBN: " + request.isbn());
+                });
 
         var category = categoryService.findCategoryById(request.categoryId());
 
@@ -110,7 +111,7 @@ public class BookService {
         Book book = findBookById(id);
 
         if (request.availableCopies() > request.totalCopies()) {
-            throw new RuntimeException("Cópias disponíveis não podem ser maiores que o total de cópias");
+            throw new BusinessException("Cópias disponíveis não podem ser maiores que o total de cópias");
         }
 
         book.setTotalCopies(request.totalCopies());
@@ -124,6 +125,6 @@ public class BookService {
 
     private Book findBookById(Long id) {
         return bookRepository.findByIdAndActiveTrue(id)
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado com ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado com ID: " + id));
     }
 }

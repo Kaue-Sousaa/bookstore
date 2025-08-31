@@ -2,6 +2,8 @@ package com.bookstore.system.libraryservice.services;
 
 import com.bookstore.system.libraryservice.dtos.CategoryRequest;
 import com.bookstore.system.libraryservice.dtos.CategoryResponse;
+import com.bookstore.system.libraryservice.exceptions.BusinessException;
+import com.bookstore.system.libraryservice.exceptions.ResourceNotFoundException;
 import com.bookstore.system.libraryservice.mappers.CategoryMapper;
 import com.bookstore.system.libraryservice.models.Category;
 import com.bookstore.system.libraryservice.repositories.CategoryRepository;
@@ -35,7 +37,7 @@ public class CategoryService {
         log.info("Criando nova categoria: {}", request.name());
 
         if (categoryRepository.existsByNameAndActiveTrue(request.name())) {
-            throw new RuntimeException("Já existe uma categoria com o nome: " + request.name());
+            throw new BusinessException("Já existe uma categoria com o nome: " + request.name());
         }
 
         var category = categoryMapper.toEntity(request);
@@ -53,7 +55,7 @@ public class CategoryService {
 
         if (!request.name().equals(existingCategory.getName()) &&
                 categoryRepository.existsByNameAndActiveTrueAndIdNot(request.name(), id)) {
-            throw new RuntimeException("Já existe uma categoria com o nome: " + request.name());
+            throw new BusinessException("Já existe uma categoria com o nome: " + request.name());
         }
 
         categoryMapper.updateEntityFromRequest(request, existingCategory);
@@ -70,7 +72,7 @@ public class CategoryService {
         Category category = findCategoryById(id);
 
         if (!category.getBooks().isEmpty()) {
-            throw new RuntimeException("Não é possível remover categoria que possui livros associados");
+            throw new BusinessException("Não é possível remover categoria que possui livros associados");
         }
 
         category.setActive(false);
@@ -81,6 +83,6 @@ public class CategoryService {
 
     public Category findCategoryById(Long id) {
         return categoryRepository.findByIdAndActiveTrue(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada com ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + id));
     }
 }

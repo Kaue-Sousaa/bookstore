@@ -2,6 +2,8 @@ package com.bookstore.system.libraryservice.services;
 
 import com.bookstore.system.libraryservice.dtos.AuthorRequest;
 import com.bookstore.system.libraryservice.dtos.AuthorResponse;
+import com.bookstore.system.libraryservice.exceptions.BusinessException;
+import com.bookstore.system.libraryservice.exceptions.ResourceNotFoundException;
 import com.bookstore.system.libraryservice.mappers.AuthorMapper;
 import com.bookstore.system.libraryservice.models.Author;
 import com.bookstore.system.libraryservice.repositories.AuthorRepository;
@@ -35,7 +37,7 @@ public class AuthorService {
         log.info("Criando novo autor: {}", request.name());
 
         if (authorRepository.existsByName(request.name())) {
-            throw new RuntimeException("Já existe um autor com o nome: " + request.name());
+            throw new BusinessException("Já existe um autor com o nome: " + request.name());
         }
 
         var author = authorMapper.toEntity(request);
@@ -53,7 +55,7 @@ public class AuthorService {
 
         if (!request.name().equals(existingAuthor.getName()) &&
                 authorRepository.existsByNameAndIdNot(request.name(), id)) {
-            throw new RuntimeException("Já existe um autor com o nome: " + request.name());
+            throw new BusinessException("Já existe um autor com o nome: " + request.name());
         }
 
         authorMapper.updateEntityFromRequest(request, existingAuthor);
@@ -69,7 +71,7 @@ public class AuthorService {
         var author = findAuthorById(id);
 
         if (!author.getBooks().isEmpty()) {
-            throw new RuntimeException("Não é possível remover autor que possui livros associados");
+            throw new BusinessException("Não é possível remover autor que possui livros associados");
         }
 
         authorRepository.delete(author);
@@ -78,6 +80,6 @@ public class AuthorService {
 
     public Author findAuthorById(Long id) {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Autor não encontrado com ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Autor não encontrado com ID: " + id));
     }
 }
