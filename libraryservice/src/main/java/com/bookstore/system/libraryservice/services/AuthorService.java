@@ -45,7 +45,6 @@ public class AuthorService {
         return authorMapper.toResponse(author);
     }
 
-
     @Transactional(rollbackFor = Exception.class)
     public AuthorResponse updateAuthor(Long id, AuthorRequest request) {
         log.info("Atualizando autor ID: {}", id);
@@ -77,7 +76,7 @@ public class AuthorService {
         log.info("Autor removido com sucesso - ID: {}", id);
     }
 
-    private Author findAuthorById(Long id) {
+    public Author findAuthorById(Long id) {
         return authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Autor não encontrado com ID: " + id));
     }

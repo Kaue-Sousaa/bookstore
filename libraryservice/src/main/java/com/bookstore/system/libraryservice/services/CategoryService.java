@@ -79,7 +79,7 @@ public class CategoryService {
         log.info("Categoria removida com sucesso - ID: {}", id);
     }
 
-    private Category findCategoryById(Long id) {
+    public Category findCategoryById(Long id) {
         return categoryRepository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada com ID: " + id));
     }
