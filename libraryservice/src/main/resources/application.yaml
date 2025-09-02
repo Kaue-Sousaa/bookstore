@@ -13,17 +13,17 @@ spring:
         platform: postgresql
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5434/libraries?createDatabaseIfNotExist=true&serverTimezone=America/Sao_Paulo
-    username: postgres
-    password: admin123456
-
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5434/libraries?createDatabaseIfNotExist=true&serverTimezone=America/Sao_Paulo}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin123456}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka/}
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: false
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
 
 server:
   servlet:
