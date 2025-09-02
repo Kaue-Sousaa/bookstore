@@ -19,27 +19,27 @@ import java.util.List;
 @RestController
 @RequestMapping("categories")
 @RequiredArgsConstructor
-@Tag(name = "Categories", description = "Operações relacionadas às categorias")
+@Tag(name = "Categories", description = "Operations related to categories")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Listar todas as categorias", description = "Retorna uma lista de todas as categorias ativas")
+    @Operation(summary = "List all categories", description = "Returns a list of all active categories")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de categorias retornada com sucesso"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "200", description = "List of categories returned successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         return ResponseEntity.ok(categoryService.findAllCategories());
     }
 
 
-    @Operation(summary = "Buscar categoria por ID", description = "Retorna os detalhes de uma categoria específica")
+    @Operation(summary = "Find category by ID", description = "Returns the details of a specific category")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Categoria encontrada"),
-            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "200", description = "Category found"),
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
@@ -47,32 +47,32 @@ public class CategoryController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Criar nova categoria", description = "Cria uma nova categoria no sistema")
+    @Operation(summary = "Create new category", description = "Creates a new category in the system")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-            @ApiResponse(responseCode = "409", description = "Nome da categoria já existe"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "201", description = "Category created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "409", description = "Category name already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest request) {
         CategoryResponse category = categoryService.createCategory(request);
 
         return ResponseEntity.created(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/id")
-                    .buildAndExpand(category.id())
-                    .toUri())
+                        .fromCurrentRequest()
+                        .path("/id")
+                        .buildAndExpand(category.id())
+                        .toUri())
                 .build();
     }
 
     @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Atualizar categoria", description = "Atualiza os dados de uma categoria existente")
+    @Operation(summary = "Update category", description = "Updates the data of an existing category")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
-            @ApiResponse(responseCode = "409", description = "Nome da categoria já existe"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "200", description = "Category updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "409", description = "Category name already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id,
                                                            @Valid @RequestBody CategoryRequest request) {
@@ -80,12 +80,12 @@ public class CategoryController {
     }
 
     @DeleteMapping(value = "{id}")
-    @Operation(summary = "Remover categoria", description = "Remove uma categoria do sistema (soft delete)")
+    @Operation(summary = "Delete category", description = "Removes a category from the system (soft delete)")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Categoria removida com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Categoria possui livros associados"),
-            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "204", description = "Category deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Category has associated books"),
+            @ApiResponse(responseCode = "404", description = "Category not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);

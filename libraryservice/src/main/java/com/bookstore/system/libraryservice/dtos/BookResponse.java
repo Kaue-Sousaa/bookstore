@@ -4,47 +4,47 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.List;
 
-@Schema(description = "Resposta com informações detalhadas de um livro")
+@Schema(description = "Response with detailed book information")
 public record BookResponse(
 
         Long id,
 
-        @Schema(description = "ISBN do livro", example = "978-3-16-148410-0")
+        @Schema(description = "Book's ISBN", example = "978-3-16-148410-0")
         String isbn,
 
-        @Schema(description = "Título do livro", example = "Dom Casmurro")
+        @Schema(description = "Book title", example = "Dom Casmurro")
         String title,
 
-        @Schema(description = "Subtítulo do livro")
+        @Schema(description = "Book subtitle")
         String subtitle,
 
-        @Schema(description = "Descrição do livro")
+        @Schema(description = "Book description")
         String description,
 
-        @Schema(description = "Nome da editora")
+        @Schema(description = "Publisher name")
         String publisher,
 
-        @Schema(description = "Data de publicação", example = "1899-01-01")
+        @Schema(description = "Publication date", example = "1899-01-01")
         LocalDate publishDate,
 
-        @Schema(description = "Número de páginas", example = "256")
+        @Schema(description = "Number of pages", example = "256")
         Long pages,
 
-        @Schema(description = "Idioma do livro", example = "pt-BR")
+        @Schema(description = "Book language", example = "pt-BR")
         String language,
 
-        @Schema(description = "Categoria associada ao livro")
+        @Schema(description = "Category associated with the book")
         CategoryResponse category,
 
-        @Schema(description = "Total de cópias cadastradas", example = "5")
+        @Schema(description = "Total number of registered copies", example = "5")
         Integer totalCopies,
 
-        @Schema(description = "Cópias disponíveis para empréstimo", example = "3")
+        @Schema(description = "Available copies for loan", example = "3")
         Integer availableCopies,
 
-        @Schema(description = "Lista de autores do livro")
+        @Schema(description = "List of book authors")
         List<AuthorResponse> authors,
 
-        @Schema(description = "Indica se o livro está ativo no sistema", example = "true")
+        @Schema(description = "Indicates whether the book is active in the system", example = "true")
         boolean active
 ) { }

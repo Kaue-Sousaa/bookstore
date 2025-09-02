@@ -19,39 +19,39 @@ import java.util.List;
 @RestController
 @RequestMapping("authors")
 @RequiredArgsConstructor
-@Tag(name = "Authors", description = "Operações relacionadas aos autores")
+@Tag(name = "Authors", description = "Operations related to authors")
 public class AuthorController {
 
     private final AuthorService authorService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Listar todos os autores", description = "Retorna uma lista de todos os autores")
+    @Operation(summary = "List all authors", description = "Returns a list of all authors")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de autores retornada com sucesso"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "200", description = "List of authors returned successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<List<AuthorResponse>> findAllAuthors(){
         return ResponseEntity.ok(authorService.findAllAuthors());
     }
 
     @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Buscar autor por ID", description = "Retorna os detalhes de um autor específico")
+    @Operation(summary = "Find author by ID", description = "Returns the details of a specific author")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Autor encontrado"),
-            @ApiResponse(responseCode = "404", description = "Autor não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "200", description = "Author found"),
+            @ApiResponse(responseCode = "404", description = "Author not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<AuthorResponse> findAuthorById(@PathVariable Long id){
         return ResponseEntity.ok(authorService.getAuthorById(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Criar novo autor", description = "Cria um novo autor no sistema")
+    @Operation(summary = "Create new author", description = "Creates a new author in the system")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Autor criado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-            @ApiResponse(responseCode = "409", description = "Nome do autor já existe"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "201", description = "Author created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "409", description = "Author name already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Void> createAuthor(@Valid @RequestBody AuthorRequest request){
         var author = authorService.createAuthor(request);
@@ -65,13 +65,13 @@ public class AuthorController {
     }
 
     @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Atualizar autor", description = "Atualiza os dados de um autor existente")
+    @Operation(summary = "Update author", description = "Updates the data of an existing author")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Autor atualizado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-            @ApiResponse(responseCode = "404", description = "Autor não encontrado"),
-            @ApiResponse(responseCode = "409", description = "Nome do autor já existe"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "200", description = "Author updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid data"),
+            @ApiResponse(responseCode = "404", description = "Author not found"),
+            @ApiResponse(responseCode = "409", description = "Author name already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<AuthorResponse> updateAuthor(@Valid @PathVariable Long id,
                                                        @RequestBody AuthorRequest request){
@@ -79,12 +79,12 @@ public class AuthorController {
     }
 
     @DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Remover autor", description = "Remove um autor do sistema")
+    @Operation(summary = "Delete author", description = "Removes an author from the system")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Autor removido com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Autor possui livros associados"),
-            @ApiResponse(responseCode = "404", description = "Autor não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "204", description = "Author deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Author has associated books"),
+            @ApiResponse(responseCode = "404", description = "Author not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Void> deleteAuthorById(@PathVariable Long id){
         authorService.deleteAuthor(id);

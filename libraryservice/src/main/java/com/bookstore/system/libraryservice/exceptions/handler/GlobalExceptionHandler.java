@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ApiResponse(
             responseCode = "400",
-            description = "Erro de validação nos campos enviados",
+            description = "Validation error in the provided fields",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorResponse.class))
     )
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ApiResponse(
             responseCode = "404",
-            description = "Recurso não encontrado",
+            description = "Resource not found",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorResponse.class))
     )
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     @ApiResponse(
             responseCode = "409",
-            description = "Erro de negócio",
+            description = "Business error",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorResponse.class))
     )
@@ -65,14 +65,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ApiResponse(
             responseCode = "500",
-            description = "Erro interno inesperado",
+            description = "Unexpected internal server error",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ErrorResponse.class))
     )
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(builderErrorResponse(ex, request));
     }
-
 
     private static ErrorResponse builderErrorResponse(Exception ex, HttpServletRequest request) {
         return new ErrorResponse(LocalDateTime.now(), ex.getMessage(), request.getRequestURI());

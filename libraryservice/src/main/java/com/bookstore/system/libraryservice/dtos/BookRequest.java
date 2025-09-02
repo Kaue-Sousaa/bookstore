@@ -7,50 +7,50 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Schema(description = "Requisição para criação de um novo livro")
+@Schema(description = "Request for creating a new book")
 public record BookRequest(
 
-        @Schema(description = "Código ISBN do livro", example = "978-3-16-148410-0")
-        @Size(max = 20, message = "ISBN deve ter no máximo 20 caracteres")
+        @Schema(description = "Book's ISBN code", example = "978-3-16-148410-0")
+        @Size(max = 20, message = "ISBN must have at most 20 characters")
         String isbn,
 
-        @Schema(description = "Título do livro", example = "Dom Casmurro")
-        @NotBlank(message = "Título é obrigatório")
-        @Size(max = 500, message = "Título deve ter no máximo 500 caracteres")
+        @Schema(description = "Book title", example = "Dom Casmurro")
+        @NotBlank(message = "Title is required")
+        @Size(max = 500, message = "Title must have at most 500 characters")
         String title,
 
-        @Schema(description = "Subtítulo do livro", example = "Uma obra clássica da literatura brasileira")
-        @Size(max = 500, message = "Subtítulo deve ter no máximo 500 caracteres")
+        @Schema(description = "Book subtitle", example = "A classic work of Brazilian literature")
+        @Size(max = 500, message = "Subtitle must have at most 500 characters")
         String subtitle,
 
-        @Schema(description = "Descrição do livro", example = "Publicado em 1899, aborda temas como ciúme e memória.")
+        @Schema(description = "Book description", example = "Published in 1899, addresses themes such as jealousy and memory.")
         String description,
 
-        @Schema(description = "Editora responsável pela publicação", example = "Editora Globo")
+        @Schema(description = "Publisher responsible for publication", example = "Globo Publisher")
         String publisher,
 
-        @Schema(description = "Data de publicação", example = "1899-01-01")
+        @Schema(description = "Publication date", example = "1899-01-01")
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate publishDate,
 
-        @Schema(description = "Número de páginas", example = "256")
-        @Min(value = 1, message = "Número de páginas deve ser positivo")
+        @Schema(description = "Number of pages", example = "256")
+        @Min(value = 1, message = "Number of pages must be positive")
         Integer pages,
 
-        @Schema(description = "Idioma do livro", example = "pt-BR")
-        @Size(max = 10, message = "Idioma deve ter no máximo 10 caracteres")
+        @Schema(description = "Book language", example = "pt-BR")
+        @Size(max = 10, message = "Language must have at most 10 characters")
         String language,
 
-        @Schema(description = "ID da categoria do livro", example = "2")
-        @NotNull(message = "Categoria é obrigatória")
+        @Schema(description = "Book category ID", example = "2")
+        @NotNull(message = "Category is required")
         Long categoryId,
 
-        @Schema(description = "Total de cópias cadastradas", example = "5")
-        @NotNull(message = "Total de cópias é obrigatório")
-        @Min(value = 1, message = "Total de cópias deve ser pelo menos 1")
+        @Schema(description = "Total number of registered copies", example = "5")
+        @NotNull(message = "Total copies is required")
+        @Min(value = 1, message = "Total copies must be at least 1")
         Integer totalCopies,
 
-        @Schema(description = "Lista de IDs dos autores do livro", example = "[1, 2]")
-        @NotEmpty(message = "Pelo menos um autor deve ser informado")
+        @Schema(description = "List of book author IDs", example = "[1, 2]")
+        @NotEmpty(message = "At least one author must be provided")
         List<Long> authorIds
 ) { }

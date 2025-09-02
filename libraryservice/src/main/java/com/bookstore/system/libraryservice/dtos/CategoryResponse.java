@@ -2,17 +2,17 @@ package com.bookstore.system.libraryservice.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "Resposta com informações de uma categoria")
+@Schema(description = "Response with category information")
 public record CategoryResponse(
 
         Long id,
 
-        @Schema(description = "Nome da categoria", example = "Literatura Brasileira")
+        @Schema(description = "Category name", example = "Brazilian Literature")
         String name,
 
-        @Schema(description = "Descrição da categoria", example = "Livros da literatura clássica e contemporânea brasileira")
+        @Schema(description = "Category description", example = "Classic and contemporary Brazilian literature books")
         String description,
 
-        @Schema(description = "Indica se a categoria está ativa no sistema", example = "true")
+        @Schema(description = "Indicates whether the category is active in the system", example = "true")
         boolean active
 ) { }

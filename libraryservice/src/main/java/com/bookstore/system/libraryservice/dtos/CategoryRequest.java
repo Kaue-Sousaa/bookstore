@@ -4,14 +4,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@Schema(description = "Requisição para criação de uma nova categoria")
+@Schema(description = "Request for creating a new category")
 public record CategoryRequest(
 
-        @Schema(description = "Nome da categoria", example = "Literatura Brasileira")
-        @NotBlank(message = "Nome da categoria é obrigatório")
-        @Size(max = 100, message = "Nome deve ter no máximo 100 caracteres")
+        @Schema(description = "Category name", example = "Brazilian Literature")
+        @NotBlank(message = "Category name is required")
+        @Size(max = 100, message = "Name must have at most 100 characters")
         String name,
 
-        @Schema(description = "Descrição da categoria", example = "Livros da literatura clássica e contemporânea brasileira")
+        @Schema(description = "Category description", example = "Classic and contemporary Brazilian literature books")
         String description
 ) { }
