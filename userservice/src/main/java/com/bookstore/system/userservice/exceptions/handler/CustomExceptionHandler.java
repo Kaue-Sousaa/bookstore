@@ -1,4 +1,4 @@
-package com.bookstore.system.userservice.exceptions.hanlder;
+package com.bookstore.system.userservice.exceptions.handler;
 
 import com.bookstore.system.userservice.exceptions.BadRequestException;
 import com.bookstore.system.userservice.exceptions.ExceptionResponse;
@@ -20,39 +20,42 @@ public class CustomExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     @ApiResponse(
             responseCode = "404",
-            description = "Recurso não encontrado",
+            description = "Resource not found",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ExceptionResponse.class))
     )
-    public final ResponseEntity<ExceptionResponse> handleNotFoundException(Exception ex, WebRequest request){
+    public final ResponseEntity<ExceptionResponse> handleNotFoundException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(builderExceptionResponse(ex, request), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadRequestException.class)
     @ApiResponse(
             responseCode = "400",
-            description = "Erro de validação nos campos enviados",
+            description = "Validation error in the provided fields",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ExceptionResponse.class))
     )
-    public final ResponseEntity<ExceptionResponse> handleBadRequestException(Exception ex, WebRequest request){
+    public final ResponseEntity<ExceptionResponse> handleBadRequestException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(builderExceptionResponse(ex, request), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     @ApiResponse(
             responseCode = "500",
-            description = "Erro interno inesperado",
+            description = "Unexpected internal server error",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ExceptionResponse.class))
     )
     public ResponseEntity<ExceptionResponse> handleGenericException(Exception ex, WebRequest request) {
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(builderExceptionResponse(ex, request));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(builderExceptionResponse(ex, request));
     }
 
     private static ExceptionResponse builderExceptionResponse(Exception ex, WebRequest request) {
         return new ExceptionResponse(
-                LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
     }
 }

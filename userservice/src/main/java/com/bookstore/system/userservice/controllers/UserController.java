@@ -24,64 +24,79 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
-@Tag(name = "Users", description = "Operações relacionadas ao usuário")
+@Tag(name = "Users", description = "Operations related to user management")
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Buscar todos usuários", description = "Retorna uma lista de usuários registrados.", tags = {"Users"})
+    @Operation(
+            summary = "Get all users",
+            description = "Returns a list of all registered users.",
+            tags = {"Users"}
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de usuários retornado com sucesso",
+            @ApiResponse(responseCode = "200", description = "List of users successfully retrieved",
                     content = @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
-            @ApiResponse(responseCode = "403", description = "Acesso negado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "403", description = "Access denied"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<List<UserDto>> findAllUser(){
+    public ResponseEntity<List<UserDto>> findAllUser() {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Buscar usuário por ID", description = "Retorna os detalhes de um usuário específico.", tags = {"Users"})
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Get user by ID",
+            description = "Returns the details of a specific user.",
+            tags = {"Users"}
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário encontrado",
+            @ApiResponse(responseCode = "200", description = "User found",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = UserDto.class)))),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-            @ApiResponse(responseCode = "403", description = "Acesso negado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+                            schema = @Schema(implementation = UserDto.class))),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-
-    public ResponseEntity<UserDto> findUserById(@PathVariable Long id){
+    public ResponseEntity<UserDto> findUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
     @PostMapping(value = "register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Criar novo usuário", description = "Cria um novo usuário no sistema", tags = {"Users"})
+    @Operation(
+            summary = "Register new user",
+            description = "Creates a new user in the system.",
+            tags = {"Users"}
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Usuário já registrado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "201", description = "User successfully created"),
+            @ApiResponse(responseCode = "400", description = "User already registered"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<Void> createUser(@Valid @NotNull @RequestBody RegisterUserDto registerUser){
+    public ResponseEntity<Void> createUser(@Valid @NotNull @RequestBody RegisterUserDto registerUser) {
         User user = userService.createUser(registerUser);
 
         return ResponseEntity.created(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(user.getId())
-                    .toUri())
+                        .fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(user.getId())
+                        .toUri())
                 .build();
     }
 
     @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Atualizar usuário", description = "Atualiza os dados do usuário existente", tags = {"Users"})
+    @Operation(
+            summary = "Update user",
+            description = "Updates the data of an existing user.",
+            tags = {"Users"}
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
-            @ApiResponse(responseCode = "403", description = "Acesso negado"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "200", description = "User successfully updated"),
+            @ApiResponse(responseCode = "403", description = "Access denied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         userService.updateUser(id, userDto);
@@ -89,12 +104,16 @@ public class UserController {
     }
 
     @DeleteMapping(value = "{id}")
+    @Operation(
+            summary = "Delete user",
+            description = "Removes a user from the system.",
+            tags = {"Users"}
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Usuário removido com sucesso"),
-            @ApiResponse(responseCode = "403", description = "Acesso negado"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "204", description = "User successfully removed"),
+            @ApiResponse(responseCode = "403", description = "Access denied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

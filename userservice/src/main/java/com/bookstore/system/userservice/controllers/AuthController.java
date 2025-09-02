@@ -20,25 +20,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
-@Tag(name = "Auth", description = "Operações relacionadas à autenticação de usuários")
+@Tag(name = "Auth", description = "Operations related to user authentication")
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
-            summary = "Autenticar usuário",
-            description = "Autentica um usuário com base nas credenciais fornecidas e retorna um token JWT.",
+            summary = "Authenticate user",
+            description = "Authenticates a user based on the provided credentials and returns a JWT token.",
             tags = {"Auth"}
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Login realizado com sucesso",
+            @ApiResponse(responseCode = "200", description = "User successfully authenticated",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = TokenDto.class))),
-            @ApiResponse(responseCode = "401", description = "Credenciais inválidas"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            @ApiResponse(responseCode = "401", description = "Invalid credentials"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<TokenDto> signin(@RequestBody LoginRequestDto login){
+    public ResponseEntity<TokenDto> signin(@RequestBody LoginRequestDto login) {
         return ResponseEntity.ok(authService.sigin(login));
     }
 }
