@@ -3,6 +3,9 @@ package com.bookstore.system.userservice.exceptions.hanlder;
 import com.bookstore.system.userservice.exceptions.BadRequestException;
 import com.bookstore.system.userservice.exceptions.ExceptionResponse;
 import com.bookstore.system.userservice.exceptions.NotFoundException;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,22 +17,42 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-
     @ExceptionHandler(NotFoundException.class)
+    @ApiResponse(
+            responseCode = "404",
+            description = "Recurso não encontrado",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class))
+    )
     public final ResponseEntity<ExceptionResponse> handleNotFoundException(Exception ex, WebRequest request){
-
-        ExceptionResponse exceptionResponse = new ExceptionResponse(
-                LocalDateTime.now(), ex.getMessage() , request.getDescription(false));
-
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(builderExceptionResponse(ex, request), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadRequestException.class)
+    @ApiResponse(
+            responseCode = "400",
+            description = "Erro de validação nos campos enviados",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class))
+    )
     public final ResponseEntity<ExceptionResponse> handleBadRequestException(Exception ex, WebRequest request){
+        return new ResponseEntity<>(builderExceptionResponse(ex, request), HttpStatus.BAD_REQUEST);
+    }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(
-                LocalDateTime.now(), ex.getMessage() , request.getDescription(false));
+    @ExceptionHandler(Exception.class)
+    @ApiResponse(
+            responseCode = "500",
+            description = "Erro interno inesperado",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExceptionResponse.class))
+    )
+    public ResponseEntity<ExceptionResponse> handleGenericException(Exception ex, WebRequest request) {
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(builderExceptionResponse(ex, request));
+    }
+
+    private static ExceptionResponse builderExceptionResponse(Exception ex, WebRequest request) {
+        return new ExceptionResponse(
+                LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
     }
 }

@@ -2,6 +2,7 @@ package com.bookstore.system.userservice.services;
 
 import com.bookstore.system.userservice.dtos.LoginRequestDto;
 import com.bookstore.system.userservice.dtos.TokenDto;
+import com.bookstore.system.userservice.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ public class AuthService {
 
     public TokenDto sigin(LoginRequestDto login){
         var user = userService.findByEmail(login.email());
+        if(user == null) throw new NotFoundException("User not found by email: " + login.email());
         authentication(login);
         return tokenService.createAccessToken(user.getEmail(), List.of(user.getRole().name()));
     }
