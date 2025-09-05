@@ -39,6 +39,25 @@ services:
       timeout: 10s
       retries: 5
 
+  db-monitoring:
+    image: postgres:latest
+    container_name: db-monitoring
+    ports:
+      - "5435:5432"
+    networks:
+      - bookstore-network
+    environment:
+      - POSTGRES_DB=monitoring
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin123456
+    volumes:
+      - postgres_users_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d users"]
+      interval: 30s
+      timeout: 10s
+      retries: 5    
+
   eurekaserver:
     build:
       context: ./system.eurekaserver

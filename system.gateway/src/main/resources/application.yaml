@@ -25,7 +25,7 @@ management:
     enabled-by-default: false
     web:
       exposure:
-        include: 'health, metrics'
+        include: "health,metrics,prometheus,info"
   endpoint:
     health:
       enabled: true
