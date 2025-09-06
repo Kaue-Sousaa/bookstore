@@ -39,28 +39,9 @@ services:
       timeout: 10s
       retries: 5
 
-  db-monitoring:
-    image: postgres:latest
-    container_name: db-monitoring
-    ports:
-      - "5435:5432"
-    networks:
-      - bookstore-network
-    environment:
-      - POSTGRES_DB=monitoring
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=admin123456
-    volumes:
-      - postgres_users_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d users"]
-      interval: 30s
-      timeout: 10s
-      retries: 5    
-
   eurekaserver:
     build:
-      context: ./system.eurekaserver
+      context: ../system.eurekaserver
     ports:
       - "8761:8761"
     networks:
@@ -78,7 +59,7 @@ services:
 
   gateway:
     build:
-      context: ./system.gateway
+      context: ../system.gateway
     ports:
       - "8080:8080"
     depends_on:
@@ -94,7 +75,7 @@ services:
 
   userservice:
     build:
-      context: ./userservice
+      context: ../userservice
     ports:
       - "8081:8081"
     depends_on:
@@ -117,7 +98,7 @@ services:
 
   libraryservice:
     build:
-      context: ./libraryservice
+      context: ../libraryservice
     ports:
       - "8082:8082"
     depends_on:
@@ -136,6 +117,16 @@ services:
       - EUREKA_INSTANCE_HOSTNAME=libraryservice
       - SPRING_APPLICATION_NAME=libraryservice
     restart: on-failure
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: on-failure
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    networks:
+      - bookstore-network
+    ports:
+      - "9090:9090"
 
 networks:
   bookstore-network:

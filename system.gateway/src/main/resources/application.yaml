@@ -19,17 +19,3 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
-
-management:
-  endpoints:
-    enabled-by-default: false
-    web:
-      exposure:
-        include: "health,metrics,prometheus,info"
-  endpoint:
-    health:
-      enabled: true
-      show-details: always
-    metrics:
-      enabled: true
-      show-details: always

@@ -27,17 +27,16 @@ eureka:
 
 management:
   endpoints:
-    enabled-by-default: false
+    access:
+      default: none
     web:
       exposure:
-        include: health,metrics,info
+        include: health,info,prometheus
   endpoint:
     health:
-      enabled: true
-      show-details: always
-    metrics:
-      enabled: true
-      show-details: always
+      access: unrestricted
+    prometheus:
+      access: unrestricted
 
 server:
   servlet:
